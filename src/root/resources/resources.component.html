@@ -1,0 +1,13 @@
+<ng-container *ngIf="resources$ | async as resourceMap">
+  <div class="category" *ngFor="let category of resourceMap | keyvalue">
+    <span class="heading">{{category.key}}</span>
+    <mat-divider></mat-divider>
+    <ng-container *ngFor="let resource of category.value | keyvalue">
+      <ng-container *ngIf="resource.value.unlockedDefault || resource.value.value > 0">
+        <div class="resource"><span
+          class="{{resource.value.cssStyle}}">{{'RESOURCES.' + resource.key | translate}} </span><span>{{resource.value.value}}
+          / {{resource.value.max}}</span></div>
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-container>

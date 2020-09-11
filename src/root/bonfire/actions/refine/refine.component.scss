@@ -1,0 +1,84 @@
+.main{
+  width: 100%;
+  display: flex;
+  font-family: 'EB Garamond', serif;
+
+  .column-1{
+    width: 20%;
+    float: left;
+  }
+
+  .column-2{
+    width: 80%;
+    float: left;
+    // background-image: radial-gradient(rgba(183, 65, 14, .3) ,rgba(183, 65, 14, .0));
+    margin: 14px 0;
+    border-radius: 5px;
+    color: white;
+    padding: 20px;
+    text-align: center;
+
+    .description {
+      margin-bottom: 10px;
+    }
+  }
+
+  .metal {
+    background-color: rgba(183, 65, 14, .1);
+  }
+
+  .medical {
+    background-color: rgba(255, 77, 77, .1);
+  }
+
+  .electronic {
+    background-color: rgba(255, 255, 102, .1);
+  }
+
+  .plastic {
+    background-color: rgba(242, 238, 229, .1);
+  }
+
+  .kindling {
+    background-color: rgba(255, 255, 255, .1);
+  }
+}
+
+.active{
+  outline: 2px solid #ddd;
+  cursor: pointer;
+  color: #ffc107;
+  background-color: grey;
+}
+
+.vertical-menu {
+  display: block !important;
+  width: 100%;
+  text-align: center;
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  color: #2980b9;
+  font-style: normal;
+  font-weight: normal;
+  text-align: left;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+li:after {
+  display: none;
+}
+
+.actions {
+  display: flex;
+  flex-flow: row;
+  margin: 35px 5px 5px 5px;
+  justify-content: center;
+  .action-button {
+    margin: 5px 10px;
+  }
+}

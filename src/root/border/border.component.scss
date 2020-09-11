@@ -1,0 +1,90 @@
+//https://www.w3schools.com/css/tryit.asp?filename=trycss3_animation4
+//https://css-tricks.com/using-multi-step-animations-transitions/
+
+.border {
+  position:relative;
+  background-color:  #ffc107;
+  width: 10px;
+  height: 100%;
+}
+
+.hl1 {
+  width: 2px;
+  height: 45px;
+  background-image: linear-gradient(#ffc107, red, #ffc107);
+  position: absolute;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-name: flow;
+  -webkit-animation-duration: 8s;
+  -webkit-animation-timing-function: linear;
+  //-webkit-animation-delay: 2s;
+  -webkit-animation-iteration-count: infinite;
+  /* Standard syntax */
+  animation-name: flow;
+  animation-duration: 8s;
+  animation-timing-function: linear;
+  // animation-delay: 2s;
+  animation-iteration-count: infinite;
+}
+
+.hl1:nth-child(1) {
+  left: 2px;
+}
+
+.hl1:nth-child(2) {
+  left: 4px;
+  animation-duration: 7.5s;
+}
+
+.hl1:nth-child(3) {
+  left: 6px;
+  animation-duration: 7s;
+}
+
+.hl1:nth-child(4) {
+  left: 8px;
+  animation-duration: 6.5s;
+}
+
+//.hl1:nth-child(1) {
+//  left: 1px;
+//  animation-delay: -1.9s;
+//}
+//
+//.hl1:nth-child(2) {
+//  left: 2px;
+//  animation-delay: -2s;
+//}
+//
+//.hl1:nth-child(3) {
+//  left: 3px;
+//  animation-delay: -2.3s;
+//}
+//
+//.hl1:nth-child(4) {
+//  left: 4px;
+//  animation-delay: -2.4s;
+//}
+//
+//.hl1:nth-child(5) {
+//  left: 5px;
+//  animation-delay: -2.1s;
+//}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes flow {
+  0%   {background-color:red; top:0;}
+  25%  {background-color:yellow; top:100px;}
+  50%  {background-color:blue; top:200px;}
+  75%  {background-color:green; top:300px;}
+  100% {background-color:red; top:400px;}
+}
+
+/* Standard syntax */
+@keyframes flow {
+  100%   {top:0;}
+  75%  { top:25vh;}
+  50%  { top:50vh;}
+  25%  { top:75vh;}
+  0% { top:calc(100% - 45px);}
+}

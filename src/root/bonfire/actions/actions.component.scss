@@ -1,0 +1,34 @@
+.base-container {
+  margin: 0 24px;
+}
+
+.tab-container {
+  margin: 12px 50%;
+  color: white;
+}
+
+
+::ng-deep .mat-tab-list .mat-tab-label {
+  color:lightgray;
+  //.mat-tab-label-active {
+  //  color: red;
+  //}
+  //
+  //div [aria-selected="true"] {
+  //  color: red;
+  //}
+}
+//
+//::ng-deep .mat-tab-label-active {
+//  color: red;
+//}
+
+.actions {
+  display: flex;
+  flex-flow: row;
+  margin: 5px 5px 5px 5px;
+  justify-content: center;
+  .action-button {
+    margin: 5px 10px;
+  }
+}

@@ -1,0 +1,7 @@
+<div class="console">
+  <ng-container *ngIf="logQueue$ | async as logQueue">
+    <div *ngFor="let log of logQueue" class="log">
+      <span>{{ log }}</span>
+    </div>
+  </ng-container>
+</div>

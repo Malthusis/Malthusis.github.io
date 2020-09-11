@@ -1,0 +1,31 @@
+.heading {
+  color: #03A3FF;
+}
+
+.category {
+  margin-bottom: 10px;
+}
+
+.resource {
+  font-family: 'EB Garamond', serif;
+  //padding: 2px 0;
+  color: white;
+  span {
+    color: white;
+    &.rubbish {
+      color: #DAA592;
+    }
+    &.plastic {
+      color: #F2EEE5;
+    }
+    &.medical {
+      color: #FF8080;
+    }
+    &.electronic {
+      color: #F0F696;
+    }
+    &.metal {
+      color: #9A9B94
+    }
+  }
+}
