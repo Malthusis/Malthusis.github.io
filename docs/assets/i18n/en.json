@@ -1,0 +1,13 @@
+{
+  "RESOURCES": {
+    "PLASTIC": "Plastic",
+    "RUBBISH": "Rubbish",
+    "KINDLING": "Kindling",
+    "METAL": "Metal",
+    "ELECTRONIC": "Electronic",
+    "MEDICAL": "Medical",
+    "HEAT": "Heat",
+    "PCHUNK": "P.Chunk",
+    "SCRAP": "Scrap"
+  }
+}
