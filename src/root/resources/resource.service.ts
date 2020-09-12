@@ -3,10 +3,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import {map, take, withLatestFrom} from 'rxjs/operators';
 import { RootService } from '../root.service';
 import {Resource, ResourceRef} from '../interface';
+import { LoggerService } from '../logger/logger.service';
 
 export enum TYPES {
   TRASH = 'Trash',
-  REFINED = 'Refined Goods',
+  REFINED = 'Refined',
   BASIC = ''
 }
 
@@ -34,7 +35,8 @@ export class ResourceService {
   // private heatWatcher$$: BehaviorSubject<boolean>;
 
   constructor(
-    private rootService: RootService
+    private rootService: RootService,
+    private loggerService: LoggerService
   ) {
     const resources = new Map<string, Map<string, Resource>>();
     const basic = new Map<string, Resource>();
@@ -169,7 +171,6 @@ export class ResourceService {
   // SYSTEM
   retreiveResource(resource: ResourceRef): Observable<Resource> {
     return this.resources$$.asObservable().pipe(
-      take(1),
       map( resources => {
         // TODO: Check for bad values.
         return resources.get(resource.category).get(resource.id);
@@ -210,6 +211,8 @@ export class ResourceService {
           costTypes[i].value = costTypes[i].value - cost;
       });
       boughtType.value = boughtType.value + bought;
+    } else {
+      this.loggerService.addMessage('Not enough resources.');
     }
   }
 

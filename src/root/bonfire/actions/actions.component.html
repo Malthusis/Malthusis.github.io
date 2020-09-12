@@ -9,8 +9,10 @@
 
           <ng-container *ngIf="gameProgress === 1">
             <div class="action-button">
-              <ng-container *ngIf="(heat$ | async) >= 25 else disabled1">
-                <button mat-stroked-button color="primary" (click)="warmByFire()">Warm Up</button>
+              <ng-container *ngIf="resources$ | async as resourceMap">
+                <ng-container *ngIf="resourceMap.get('').get('HEAT').value >= 25 else disabled1">
+                  <button mat-stroked-button color="primary" (click)="warmByFire()">Warm Up</button>
+                </ng-container>
               </ng-container>
               <ng-template #disabled1>
                 <button mat-stroked-button>Warm Up</button>

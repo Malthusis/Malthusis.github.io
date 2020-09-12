@@ -25,8 +25,8 @@ export class RefineComponent implements OnInit {
   }
 
   smeltMetal(): void {
-    combineLatest(this.resourcesService.retreiveResource({category: 'trash', id: 'METAL'}),
-      this.resourcesService.retreiveResource({category: 'refined', id: 'SCRAP'})).pipe(
+    combineLatest(this.resourcesService.retreiveResource({category: 'Trash', id: 'METAL'}),
+      this.resourcesService.retreiveResource({category: 'Refined', id: 'SCRAP'})).pipe(
       take(1),
     ).subscribe(([trash, metal]) => {
       this.resourcesService.transaction([5], [trash], 1, metal);
