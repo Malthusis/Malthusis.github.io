@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { take, withLatestFrom } from 'rxjs/operators';
+import {map, take, withLatestFrom} from 'rxjs/operators';
 import { RootService } from '../root.service';
-import { Resource } from '../interface';
+import {Resource, ResourceRef} from '../interface';
 
 export enum TYPES {
   TRASH = 'Trash',
@@ -167,6 +167,20 @@ export class ResourceService {
 
 
   // SYSTEM
+  retreiveResource(resource: ResourceRef): Observable<Resource> {
+    return this.resources$$.asObservable().pipe(
+      take(1),
+      map( resources => {
+        // TODO: Check for bad values.
+        return resources.get(resource.category).get(resource.id);
+        }
+      )
+    );
+  }
+
+  /**
+   * Change a resource by a certain number. Return false if this cannot be done (less then 0 left).
+   */
   changeResource(value: number, resource: Resource): boolean {
     if (value < 0) {
       if (resource.value + value < 0) {
@@ -177,6 +191,26 @@ export class ResourceService {
       resource.value + value > resource.max ? resource.value = resource.max : resource.value = resource.value + value;
     }
     return true;
+  }
+
+  transaction(costs: number[], costTypes: Resource[], bought: number, boughtType: Resource) {
+    let transactionValid = true;
+    if (costs.length !== costTypes.length) {
+      return;
+    }
+    // Check if we have enough to pay, then complete transaction
+    costs.forEach((cost, i) => {
+      if (costTypes[i].value < cost) {
+        transactionValid = false;
+      }
+    });
+
+    if (transactionValid) {
+      costs.forEach((cost, i) => {
+          costTypes[i].value = costTypes[i].value - cost;
+      });
+      boughtType.value = boughtType.value + bought;
+    }
   }
 
   // TODO: Improve this later so we don't have to save all these unnecessary fields.

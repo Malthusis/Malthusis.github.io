@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '../../resources/resource.service';
 import { Observable } from 'rxjs';
 import { Resource } from '../../interface';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { GameFlagsService } from '../../game-flags/game-flags.service';
 import { LoggerService } from '../../logger/logger.service';
 
@@ -19,22 +19,21 @@ export class ActionsComponent implements OnInit {
     private loggerService: LoggerService
   ) {}
 
-  resources$: Observable<Map<string, Map<string, Resource>>>;
   gameProgress$: Observable<number>;
+  heat$: Observable<number>;
 
   ngOnInit(): void {
-    this.resources$ = this.resourcesService.resources$;
     this.gameProgress$ = this.gameFlagsService.initialStage$;
-
+    this.heat$ = this.resourcesService.retreiveResource({category: '', id: 'HEAT'}).pipe(
+      map( heat => heat.value));
   }
 
   kindleFire(): void {
-    this.resources$.pipe(
+    this.resourcesService.retreiveResource({category: '', id: 'HEAT'}).pipe(
       take(1)
-    ).subscribe( resources => {
-        this.resourcesService.changeResource(1, resources.get('').get('HEAT'));
-      }
-    );
+    ).subscribe(heat => {
+        this.resourcesService.changeResource(1, heat);
+    });
   }
 
   warmByFire(): void {

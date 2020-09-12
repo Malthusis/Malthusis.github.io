@@ -1,50 +1,47 @@
 <div class="base-container">
-  <ng-container *ngIf="resources$ | async as resourceMap">
-    <ng-container *ngIf="gameProgress$ | async as gameProgress">
-      <mat-tab-group animationDuration="0ms">
-
-        <mat-tab label="Actions">
-          <div class="tab-container actions">
-            <div class="action-button">
-              <button mat-stroked-button color="primary" (click)="kindleFire()">Kindle Fire</button>
-            </div>
-
-            <ng-container *ngIf="gameProgress === 1">
-              <div class="action-button">
-                <ng-container *ngIf="resourceMap.get('').get('HEAT').value >= 25 else disabled1">
-                  <button mat-stroked-button color="primary" (click)="warmByFire()">Warm Up</button>
-                </ng-container>
-                <ng-template #disabled1>
-                  <button mat-stroked-button>Warm Up</button>
-                </ng-template>
-              </div>
-            </ng-container>
-
-            <ng-container *ngIf="gameProgress > 1">
-              <div class="action-button">
-                <button mat-stroked-button color="primary" (click)="pickTrash()">Pick Trash</button>
-              </div>
-            </ng-container>
+  <ng-container *ngIf="gameProgress$ | async as gameProgress">
+    <mat-tab-group animationDuration="0ms">
+      <mat-tab label="Actions">
+        <div class="tab-container actions">
+          <div class="action-button">
+            <button mat-stroked-button color="primary" (click)="kindleFire()">Kindle Fire</button>
           </div>
+
+          <ng-container *ngIf="gameProgress === 1">
+            <div class="action-button">
+              <ng-container *ngIf="(heat$ | async) >= 25 else disabled1">
+                <button mat-stroked-button color="primary" (click)="warmByFire()">Warm Up</button>
+              </ng-container>
+              <ng-template #disabled1>
+                <button mat-stroked-button>Warm Up</button>
+              </ng-template>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="gameProgress > 1">
+            <div class="action-button">
+              <button mat-stroked-button color="primary" (click)="pickTrash()">Pick Trash</button>
+            </div>
+          </ng-container>
+        </div>
+      </mat-tab>
+
+      <ng-container *ngIf="gameProgress > 1">
+        <mat-tab label="Refine">
+          <refine></refine>
         </mat-tab>
+      </ng-container>
 
-        <ng-container *ngIf="gameProgress > 1">
-          <mat-tab label="Refine">
-            <refine></refine>
-          </mat-tab>
-        </ng-container>
-
-        <mat-tab label="Options">
-          <div class="tab-container actions">
-            <div class="action-button">
-              <button mat-stroked-button color="primary" (click)="save()">Save</button>
-            </div>
-            <div class="action-button">
-              <button mat-stroked-button color="primary" (click)="load()">Load</button>
-            </div>
+      <mat-tab label="Options">
+        <div class="tab-container actions">
+          <div class="action-button">
+            <button mat-stroked-button color="primary" (click)="save()">Save</button>
           </div>
-        </mat-tab>
-      </mat-tab-group>
-    </ng-container>
+          <div class="action-button">
+            <button mat-stroked-button color="primary" (click)="load()">Load</button>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </ng-container>
 </div>

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService } from '../../../resources/resource.service';
-import { Observable } from 'rxjs';
-import { Resource } from '../../../interface';
+import { ResourceService, TYPES } from '../../../resources/resource.service';
+import { combineLatest, Observable } from 'rxjs';
+import { GameFlagsService } from '../../../game-flags/game-flags.service';
+import { take } from 'rxjs/operators';
 
 
 @Component({
@@ -12,14 +13,23 @@ import { Resource } from '../../../interface';
 export class RefineComponent implements OnInit {
 
   constructor(
-    private resourcesService: ResourceService
+    private resourcesService: ResourceService,
+    private gameFlagsService: GameFlagsService
   ) {}
 
+  gameProgress$: Observable<number>;
   viewMode = 'tab1';
 
-  private trashArray$: Observable<Map<string, Resource[]>>;
-
   ngOnInit(): void {
+    this.gameProgress$ = this.gameFlagsService.initialStage$;
   }
 
+  smeltMetal(): void {
+    combineLatest(this.resourcesService.retreiveResource({category: 'trash', id: 'METAL'}),
+      this.resourcesService.retreiveResource({category: 'refined', id: 'SCRAP'})).pipe(
+      take(1),
+    ).subscribe(([trash, metal]) => {
+      this.resourcesService.transaction([5], [trash], 1, metal);
+    });
+  }
 }
