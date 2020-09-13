@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService } from '../resources/resource.service';
+import { Observable } from 'rxjs';
+import { GameFlagsService } from '../game-flags/game-flags.service';
 
 @Component({
   selector: 'bonfire',
@@ -9,10 +10,13 @@ import { ResourceService } from '../resources/resource.service';
 export class BonfireComponent implements OnInit {
 
   constructor(
-    private resourcesService: ResourceService
+    private gameFlagsService: GameFlagsService
   ) {}
 
+  gameProgress$: Observable<number>;
+
   ngOnInit(): void {
+    this.gameProgress$ = this.gameFlagsService.initialStage$;
   }
 
 }
