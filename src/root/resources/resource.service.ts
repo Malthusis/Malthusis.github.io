@@ -4,25 +4,7 @@ import {map, take, withLatestFrom} from 'rxjs/operators';
 import { RootService } from '../root.service';
 import {Resource, ResourceRef} from '../interface';
 import { LoggerService } from '../logger/logger.service';
-
-export enum TYPES {
-  TRASH = 'Trash',
-  REFINED = 'Refined',
-  BASIC = ''
-}
-
-export enum TRASH {
-  RUBBISH = 0,
-  KINDLING = 1,
-  SCRAP = 2,
-  PLASTIC = 3,
-  ELECTRONIC = 4,
-  MEDICAL = 5
-}
-
-export enum REFINED {
-  PCHUNK = 0,
-}
+import { TYPES } from './interface';
 
 const TRASH_LENGTH = 6;
 
@@ -53,6 +35,7 @@ export class ResourceService {
 
     this.resourceGenTicks$ = this.rootService.resourceGenTick$;
 
+    // Central game loop.
     this.rootService.resourceGenTick$.pipe(
       withLatestFrom(this.resources$$.asObservable())
     ).subscribe(
@@ -65,11 +48,14 @@ export class ResourceService {
 
         // Heat Decay
         this.heatTick++;
-        const statsArray = resourceMap.get(TYPES.BASIC);
+        const basicStats = resourceMap.get(TYPES.BASIC);
         if (this.heatTick >= 10) {
-          this.changeResource(-1, statsArray.get('HEAT'));
+          this.changeResource(-1, basicStats.get('HEAT'));
           this.heatTick = 0;
         }
+
+        // Current Task Handling
+
       }
     );
   }
@@ -149,6 +135,13 @@ export class ResourceService {
     });
 
     const resources = this.resources$$.getValue();
+    resources.get(TYPES.BASIC).set('ENERGY', {
+      key: 'ENERGY',
+      value: 0,
+      max: 50,
+      cssStyle: 'energy',
+      unlockedDefault: true
+    });
     resources.set(TYPES.TRASH, trash);
     resources.set(TYPES.REFINED, refined);
   }

@@ -8,6 +8,7 @@
     "MEDICAL": "Medical",
     "HEAT": "Heat",
     "PCHUNK": "P.Chunk",
-    "SCRAP": "Scrap"
+    "SCRAP": "Scrap",
+    "ENERGY": "Energy"
   }
 }
