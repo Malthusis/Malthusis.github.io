@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, TYPES } from '../../../resources/resource.service';
+import { ResourceService } from '../../../resources/resource.service';
 import { combineLatest, Observable } from 'rxjs';
 import { GameFlagsService } from '../../../game-flags/game-flags.service';
 import { take } from 'rxjs/operators';

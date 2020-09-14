@@ -1,9 +1,29 @@
 <div>
-  <div>
-    <actions></actions>
+  <div class="base-container">
+    <ng-container *ngIf="gameProgress$ | async as gameProgress">
+      <mat-tab-group animationDuration="0ms">
+        <mat-tab label="Actions">
+          <actions></actions>
+        </mat-tab>
+
+        <ng-container *ngIf="gameProgress > 1">
+          <mat-tab label="Refine">
+            <refine></refine>
+          </mat-tab>
+        </ng-container>
+
+        <mat-tab label="Options">
+          <div class="tab-container actions">
+            <div class="action-button">
+              <button mat-stroked-button color="primary" (click)="save()">Save</button>
+            </div>
+            <div class="action-button">
+              <button mat-stroked-button color="primary" (click)="load()">Load</button>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-container>
   </div>
-<!--  <div>-->
-<!--    <actions></actions>-->
-<!--  </div>-->
 
 </div>
