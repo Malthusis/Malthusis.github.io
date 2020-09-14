@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {map, take, withLatestFrom} from 'rxjs/operators';
+import { map, take, withLatestFrom } from 'rxjs/operators';
 import { RootService } from '../root.service';
-import {Resource, ResourceRef} from '../interface';
+import { Resource, ResourceRef } from '../interface';
 import { LoggerService } from '../logger/logger.service';
 import { TYPES } from './interface';
 

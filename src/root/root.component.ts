@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, TYPES } from './resources/resource.service';
+import { ResourceService } from './resources/resource.service';
 import { Observable } from 'rxjs';
 import { Resource } from './interface';
 import { TranslateService } from '@ngx-translate/core';
