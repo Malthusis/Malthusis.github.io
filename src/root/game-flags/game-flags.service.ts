@@ -2,9 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ResourceService } from '../resources/resource.service';
 
-
-
-
 @Injectable()
 export class GameFlagsService {
 

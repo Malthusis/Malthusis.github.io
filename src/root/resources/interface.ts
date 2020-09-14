@@ -17,8 +17,9 @@ export enum REFINED {
   PCHUNK = 0,
 }
 
-export enum Tasks {
+export enum Task {
   NOTHING = 0,
   REST = 1,
-  TEND_FIRE = 2
+  TEND_FIRE = 2,
+  PICK_TRASH = 3
 }

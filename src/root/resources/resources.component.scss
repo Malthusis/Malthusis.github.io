@@ -6,6 +6,16 @@
   margin-bottom: 10px;
 }
 
+.task {
+  margin-bottom: 20px;
+  .preface {
+    color:lightgreen;
+  }
+  .currentTask {
+    color:lightgray;
+  }
+}
+
 .resource {
   font-family: 'EB Garamond', serif;
   //padding: 2px 0;
