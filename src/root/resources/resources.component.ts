@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { RootService } from '../root.service';
 import { Task } from './interface';
 import { map } from 'rxjs/operators';
+import { GameFlagsService } from '../game-flags/game-flags.service';
 
 @Component({
   selector: 'resources',
@@ -15,14 +16,17 @@ export class ResourcesComponent implements OnInit {
 
   constructor(
     private resourcesService: ResourceService,
+    private gameFlagsService: GameFlagsService,
     private rootService: RootService
   ) {}
 
   resources$: Observable<Map<string, Map<string, Resource>>>;
   currentTask$: Observable<string>;
+  gameProgress$: Observable<number>;
 
   ngOnInit(): void {
     this.resources$ = this.resourcesService.resources$;
+    this.gameProgress$ = this.gameFlagsService.initialStage$;
     // TODO: Add translation keys.
     this.currentTask$ = this.rootService.currentTask$.pipe(
       map(task => {

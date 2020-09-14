@@ -1,4 +1,4 @@
-<ng-container *ngIf="currentTask$ | async as task">
+<ng-container *ngIf="(gameProgress$ | async) > 1 && (currentTask$ | async) as task">
   <div class="task">
     <span class="preface">Currently: </span><br>
     <span class="currentTask">{{ task }}</span>
