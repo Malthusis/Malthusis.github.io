@@ -1,26 +1,36 @@
 <ng-container *ngIf="gameProgress$ | async as gameProgress">
-  <div class="tab-container actions">
-    <div class="action-button">
-      <button mat-stroked-button color="primary" (click)="kindleFire()">Kindle Fire</button>
-    </div>
-
-    <ng-container *ngIf="gameProgress === 1">
+  <mat-list class="actions">
+    <mat-list-item>
       <div class="action-button">
-        <ng-container *ngIf="resources$ | async as resourceMap">
-          <ng-container *ngIf="resourceMap.get('').get('HEAT').value >= 25 else disabled1">
-            <button mat-stroked-button color="primary" (click)="warmByFire()">Warm Up</button>
+        <button mat-stroked-button color="primary" (click)="kindleFire()">Kindle Fire</button>
+      </div>
+      <ng-container *ngIf="gameProgress === 1">
+        <div class="action-button">
+          <ng-container *ngIf="resources$ | async as resourceMap">
+            <ng-container *ngIf="resourceMap.get('').get('HEAT').value >= 25 else disabled1">
+              <button mat-stroked-button color="primary" (click)="warmByFire()">Warm Up</button>
+            </ng-container>
           </ng-container>
-        </ng-container>
-        <ng-template #disabled1>
-          <button mat-stroked-button>Warm Up</button>
-        </ng-template>
-      </div>
-    </ng-container>
+          <ng-template #disabled1>
+            <button mat-stroked-button>Warm Up</button>
+          </ng-template>
+        </div>
+      </ng-container>
 
+    </mat-list-item>
     <ng-container *ngIf="gameProgress > 1">
-      <div class="action-button">
-        <button mat-stroked-button color="primary" (click)="pickTrash()">Pick Trash</button>
-      </div>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <div class="action-button">
+          <button mat-stroked-button color="primary" (click)="changeTask(Task.PICK_TRASH)">Pick Trash</button>
+        </div>
+        <div class="action-button">
+          <button mat-stroked-button color="primary" (click)="changeTask(Task.REST)">Rest</button>
+        </div>
+        <div class="action-button">
+          <button mat-stroked-button color="primary" (click)="changeTask(Task.TEND_FIRE)">Tend Fire</button>
+        </div>
+      </mat-list-item>
     </ng-container>
-  </div>
+  </mat-list>
 </ng-container>

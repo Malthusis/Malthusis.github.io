@@ -20,6 +20,7 @@ import { RefineComponent } from './bonfire/actions/refine/refine.component';
 import { TooltipDirective } from './tooltip/tooltip.directive';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { MatListModule } from '@angular/material/list';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
@@ -51,7 +52,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    MatTabsModule
+    MatTabsModule,
+    MatListModule
   ],
   providers: [RootService, ResourceService, GameFlagsService, LoggerService],
   bootstrap: [RootComponent]

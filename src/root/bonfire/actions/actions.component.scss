@@ -8,11 +8,23 @@
 }
 
 .actions {
-  display: flex;
-  flex-flow: row;
   margin: 5px 5px 5px 5px;
   justify-content: center;
   .action-button {
     margin: 5px 10px;
   }
+}
+
+.action-button {
+  margin: 5px 10px;
+}
+
+.mat-divider {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-top-color: silver;
+}
+
+:host ::ng-deep .mat-list-item-content {
+  justify-content: center !important;
 }

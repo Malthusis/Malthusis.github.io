@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { Resource } from '../../interface';
 import { take } from 'rxjs/operators';
 import { GameFlagsService } from '../../game-flags/game-flags.service';
+import { Task } from '../../resources/interface';
+import { RootService } from '../../root.service';
 
 @Component({
   selector: 'actions',
@@ -14,7 +16,8 @@ export class ActionsComponent implements OnInit {
 
   constructor(
     private resourcesService: ResourceService,
-    private gameFlagsService: GameFlagsService
+    private gameFlagsService: GameFlagsService,
+    private rootService: RootService
   ) {}
 
   gameProgress$: Observable<number>;
@@ -37,8 +40,16 @@ export class ActionsComponent implements OnInit {
     this.gameFlagsService.advanceToStage1();
   }
 
-  pickTrash(): void {
-    this.resourcesService.pickTrash();
+  // pickTrash(): void {
+  //   this.resourcesService.pickTrash();
+  // }
+
+  changeTask(task: Task) {
+    this.rootService.setTask(task);
+  }
+
+  public get Task() {
+    return Task;
   }
 
 }
