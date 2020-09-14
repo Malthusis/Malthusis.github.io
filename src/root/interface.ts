@@ -5,3 +5,8 @@ export interface Resource {
   cssStyle?: string;
   unlockedDefault: boolean;
 }
+
+export interface ResourceRef {
+  category: string;
+  id: string;
+}

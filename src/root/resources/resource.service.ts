@@ -1,27 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { take, withLatestFrom } from 'rxjs/operators';
+import { map, take, withLatestFrom } from 'rxjs/operators';
 import { RootService } from '../root.service';
-import { Resource } from '../interface';
-
-export enum TYPES {
-  TRASH = 'Trash',
-  REFINED = 'Refined Goods',
-  BASIC = ''
-}
-
-export enum TRASH {
-  RUBBISH = 0,
-  KINDLING = 1,
-  SCRAP = 2,
-  PLASTIC = 3,
-  ELECTRONIC = 4,
-  MEDICAL = 5
-}
-
-export enum REFINED {
-  PCHUNK = 0,
-}
+import { Resource, ResourceRef } from '../interface';
+import { LoggerService } from '../logger/logger.service';
+import { TYPES } from './interface';
 
 const TRASH_LENGTH = 6;
 
@@ -34,7 +17,8 @@ export class ResourceService {
   // private heatWatcher$$: BehaviorSubject<boolean>;
 
   constructor(
-    private rootService: RootService
+    private rootService: RootService,
+    private loggerService: LoggerService
   ) {
     const resources = new Map<string, Map<string, Resource>>();
     const basic = new Map<string, Resource>();
@@ -51,6 +35,7 @@ export class ResourceService {
 
     this.resourceGenTicks$ = this.rootService.resourceGenTick$;
 
+    // Central game loop.
     this.rootService.resourceGenTick$.pipe(
       withLatestFrom(this.resources$$.asObservable())
     ).subscribe(
@@ -63,11 +48,14 @@ export class ResourceService {
 
         // Heat Decay
         this.heatTick++;
-        const statsArray = resourceMap.get(TYPES.BASIC);
+        const basicStats = resourceMap.get(TYPES.BASIC);
         if (this.heatTick >= 10) {
-          this.changeResource(-1, statsArray.get('HEAT'));
+          this.changeResource(-1, basicStats.get('HEAT'));
           this.heatTick = 0;
         }
+
+        // Current Task Handling
+
       }
     );
   }
@@ -147,6 +135,13 @@ export class ResourceService {
     });
 
     const resources = this.resources$$.getValue();
+    resources.get(TYPES.BASIC).set('ENERGY', {
+      key: 'ENERGY',
+      value: 0,
+      max: 50,
+      cssStyle: 'energy',
+      unlockedDefault: true
+    });
     resources.set(TYPES.TRASH, trash);
     resources.set(TYPES.REFINED, refined);
   }
@@ -167,6 +162,19 @@ export class ResourceService {
 
 
   // SYSTEM
+  retreiveResource(resource: ResourceRef): Observable<Resource> {
+    return this.resources$$.asObservable().pipe(
+      map( resources => {
+        // TODO: Check for bad values.
+        return resources.get(resource.category).get(resource.id);
+        }
+      )
+    );
+  }
+
+  /**
+   * Change a resource by a certain number. Return false if this cannot be done (less then 0 left).
+   */
   changeResource(value: number, resource: Resource): boolean {
     if (value < 0) {
       if (resource.value + value < 0) {
@@ -177,6 +185,28 @@ export class ResourceService {
       resource.value + value > resource.max ? resource.value = resource.max : resource.value = resource.value + value;
     }
     return true;
+  }
+
+  transaction(costs: number[], costTypes: Resource[], bought: number, boughtType: Resource) {
+    let transactionValid = true;
+    if (costs.length !== costTypes.length) {
+      return;
+    }
+    // Check if we have enough to pay, then complete transaction
+    costs.forEach((cost, i) => {
+      if (costTypes[i].value < cost) {
+        transactionValid = false;
+      }
+    });
+
+    if (transactionValid) {
+      costs.forEach((cost, i) => {
+          costTypes[i].value = costTypes[i].value - cost;
+      });
+      boughtType.value = boughtType.value + bought;
+    } else {
+      this.loggerService.addMessage('Not enough resources.');
+    }
   }
 
   // TODO: Improve this later so we don't have to save all these unnecessary fields.

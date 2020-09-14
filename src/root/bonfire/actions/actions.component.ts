@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { Resource } from '../../interface';
 import { take } from 'rxjs/operators';
 import { GameFlagsService } from '../../game-flags/game-flags.service';
-import { LoggerService } from '../../logger/logger.service';
+import { Task } from '../../resources/interface';
+import { RootService } from '../../root.service';
 
 @Component({
   selector: 'actions',
@@ -16,51 +17,39 @@ export class ActionsComponent implements OnInit {
   constructor(
     private resourcesService: ResourceService,
     private gameFlagsService: GameFlagsService,
-    private loggerService: LoggerService
+    private rootService: RootService
   ) {}
 
-  resources$: Observable<Map<string, Map<string, Resource>>>;
   gameProgress$: Observable<number>;
+  resources$: Observable<Map<string, Map<string, Resource>>>;
 
   ngOnInit(): void {
-    this.resources$ = this.resourcesService.resources$;
     this.gameProgress$ = this.gameFlagsService.initialStage$;
-
+    this.resources$ = this.resourcesService.resources$;
   }
 
   kindleFire(): void {
-    this.resources$.pipe(
+    this.resourcesService.retreiveResource({category: '', id: 'HEAT'}).pipe(
       take(1)
-    ).subscribe( resources => {
-        this.resourcesService.changeResource(1, resources.get('').get('HEAT'));
-      }
-    );
+    ).subscribe(heat => {
+        this.resourcesService.changeResource(1, heat);
+    });
   }
 
   warmByFire(): void {
     this.gameFlagsService.advanceToStage1();
   }
 
-  pickTrash(): void {
-    this.resourcesService.pickTrash();
+  // pickTrash(): void {
+  //   this.resourcesService.pickTrash();
+  // }
+
+  changeTask(task: Task) {
+    this.rootService.setTask(task);
   }
 
-  save(): void {
-    const resourcesJSON = this.resourcesService.save();
-    const flagsJSON = this.gameFlagsService.save();
-    const saveString = [['resources', resourcesJSON], ['flags', flagsJSON]];
-
-    localStorage.setItem('save', JSON.stringify(saveString));
-    this.loggerService.addMessage('Save successful!');
+  public get Task() {
+    return Task;
   }
 
-  load(): void {
-    const loadString = JSON.parse(localStorage.getItem('save'));
-    const resources = loadString[0][1];
-    const flags = loadString[1][1];
-
-    this.resourcesService.load(resources);
-    this.gameFlagsService.load(flags);
-    this.loggerService.addMessage('Load successful!');
-  }
 }

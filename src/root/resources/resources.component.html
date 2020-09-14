@@ -1,3 +1,9 @@
+<ng-container *ngIf="(gameProgress$ | async) > 1 && (currentTask$ | async) as task">
+  <div class="task">
+    <span class="preface">Currently: </span><br>
+    <span class="currentTask">{{ task }}</span>
+  </div>
+</ng-container>
 <ng-container *ngIf="resources$ | async as resourceMap">
   <div class="category" *ngFor="let category of resourceMap | keyvalue">
     <span class="heading">{{category.key}}</span>
