@@ -4,7 +4,7 @@ import { map, take, withLatestFrom } from 'rxjs/operators';
 import { RootService } from '../root.service';
 import { Resource, ResourceRef } from '../interface';
 import { LoggerService } from '../logger/logger.service';
-import { TYPES } from './interface';
+import { Task, TRASH, TYPES } from './interface';
 
 const TRASH_LENGTH = 6;
 
@@ -13,7 +13,10 @@ export class ResourceService {
 
   private resourceGenTicks$: Observable<any>;
   private resources$$: BehaviorSubject<Map<string, Map<string, Resource>>>;
+  // Maybe turn these two into BehaviorSubject
   private heatTick = 0;
+  private taskTick = 0;
+
   // private heatWatcher$$: BehaviorSubject<boolean>;
 
   constructor(
@@ -37,24 +40,38 @@ export class ResourceService {
 
     // Central game loop.
     this.rootService.resourceGenTick$.pipe(
-      withLatestFrom(this.resources$$.asObservable())
+      withLatestFrom(this.resources$$.asObservable(), this.rootService.currentTask$)
     ).subscribe(
-      ([_, resourceMap]) => {
-        // TODO: FIX
-        // Gather Trash
-        // const trashArray = resourceMap.get(TYPES.TRASH);
-        // const garbagePick = this.randomIntFromInterval(0, TRASH_LENGTH - 1);
-        // this.changeResource(1, trashArray.get(garbagePick));
+      ([_, resourceMap, task]) => {
+        const basicStats = resourceMap.get(TYPES.BASIC);
+        const trashArray = resourceMap.get(TYPES.TRASH);
 
         // Heat Decay
         this.heatTick++;
-        const basicStats = resourceMap.get(TYPES.BASIC);
-        if (this.heatTick >= 10) {
+        if (this.heatTick >= 8) {
           this.changeResource(-1, basicStats.get('HEAT'));
           this.heatTick = 0;
         }
 
         // Current Task Handling
+        if (this.taskTick > 3) {
+          switch (task) {
+            case Task.TEND_FIRE:
+              this.changeResource(1, basicStats.get('HEAT'));
+              break;
+            case Task.REST:
+              this.changeResource(2, basicStats.get('ENERGY'));
+              break;
+            case Task.PICK_TRASH:
+              const garbagePick = TRASH[this.randomIntFromInterval(0, TRASH_LENGTH - 1)];
+              this.changeResource(1, trashArray.get(garbagePick));
+              break;
+          }
+          this.taskTick = 0;
+        } else {
+          this.taskTick++;
+        }
+
 
       }
     );

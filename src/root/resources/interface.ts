@@ -7,7 +7,7 @@ export enum TYPES {
 export enum TRASH {
   RUBBISH = 0,
   KINDLING = 1,
-  SCRAP = 2,
+  METAL = 2,
   PLASTIC = 3,
   ELECTRONIC = 4,
   MEDICAL = 5

@@ -20,6 +20,7 @@
     </mat-list-item>
     <ng-container *ngIf="gameProgress > 1">
       <mat-divider></mat-divider>
+      <mat-list-item><span class="title">Tasks:</span></mat-list-item>
       <mat-list-item>
         <div class="action-button">
           <button mat-stroked-button color="primary" (click)="changeTask(Task.PICK_TRASH)">Pick Trash</button>

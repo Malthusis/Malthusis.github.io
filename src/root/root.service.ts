@@ -11,7 +11,7 @@ export class RootService {
   private currentTask$$: BehaviorSubject<Task> = new BehaviorSubject<Task>(Task.NOTHING);
 
   constructor() {
-    this.resourceGenTicks$ = interval(1000);
+    this.resourceGenTicks$ = interval(500);
   }
 
   setTask(task: Task) {
